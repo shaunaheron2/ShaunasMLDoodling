@@ -1,0 +1,108 @@
+---
+title: MicroGrad
+description: Learning to use micrograd
+authors:
+  - name: Andrej Karpathy
+jupyter: python3
+---
+
+Lesson 1: https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ
+
+- Neural Nets are certain kind of class of mathematical forms
+
+- To learn neural nets we can't be playing around with large tensors, it is better to learn on the more fundamental (scalar) level. In other words, at the level of individual weights, biases and gradients. We will use micrograd for this.
+
+```{python}
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+
+```
+
+# What is a derivative
+
+1. Let's define a quadratic function
+
+```{python}
+def f(x):
+  return 3*x**2 - 4*x + 5
+```
+
+2. Let's apply our function to the scalar 3 (it gives us 20 back)
+
+```{python}
+f(3.0)
+```
+
+3. Create a set of scalar values to feed in based on our function
+  - so the function is applied to each value in the array independently
+  - note that when we look at our parabola and look for the 3 we added to our function earlier, we can see the corresponding y value is indeed 20.
+
+```{python}
+
+xs = np.arange(-5, 5, 0.25)
+ys = f(xs) # now we plug our array into our function
+
+plt.plot(xs, ys)
+```
+
+4. DEFINE DERIV HERE
+  - basically if you add a very tiny small number (h)
+
+
+```{python}
+h=0.000000000001
+x=3.0
+
+(f(x + h)-f(x))/h  # this tells us, that at point x = 3, y = 20 and the slope is 14
+
+```
+
+HOw about the slope at -3?
+
+
+```{python}
+h=0.000000000001
+x = -3.0
+(f(x + h)-f(x))/h  # this tells us, that at point x = 3, y = 20 and the slope is 14
+```
+
+So, for this parabola, where would be the minima?
+
+```{python}
+h=0.0000001
+x = 2/3
+(f(x + h)-f(x))/h  # here we find the minima
+```
+
+Lets get more complex
+ - now we have a function that produces an output d, that is a function of 3 scalar values
+```{python}
+
+a = 2.0
+b = -3.0
+c = 10.0
+d = a*b + c
+print(d)
+
+```
+
+So now we will look at the derivitave of d, with respect to a, b and c
+
+```{python}
+h = 0.0001
+
+# inputs
+a = 2.0
+b = -3.0
+c = 10.0
+
+d1 = a*b + c
+c += h # now we'll bump a by h
+d2 = a*b + c
+
+
+print('d1', d1)
+print('d2', d2)
+print('slope', (d2 - d1)/h)
+```
